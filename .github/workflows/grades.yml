@@ -1,0 +1,30 @@
+name: Daily Grade Update
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+      timezone: "America/Los_Angeles"
+  workflow_dispatch:
+
+jobs:
+  grades:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run grade updater
+        env:
+          CANVAS_TOKEN: ${{ secrets.CANVAS_TOKEN }}
+          EMAIL: ${{ secrets.EMAIL }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: python main.py

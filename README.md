@@ -1,2 +1,3 @@
-# daily-email
-Send a daily email to school account. More info in README.md
+# Daily Email
+
+Automatically retrieves Canvas grades and sends them by email.
