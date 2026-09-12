@@ -24,7 +24,7 @@ jobs:
 
       - name: Run grade updater
         env:
-          CANVAS_TOKEN: ${{ secrets.CANVAS_TOKEN }}
+          CANVAS_TOKEN: ${{ secrets.TOKEN }}
           EMAIL: ${{ secrets.EMAIL }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          PASS: ${{ secrets.PASS }}
         run: python main.py
