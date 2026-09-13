@@ -6,7 +6,7 @@ on:
       - main
 
   schedule:
-    - cron: "45 8 * * *"
+    - cron: "50 8 * * *"
       timezone: "America/Los_Angeles"
 
   workflow_dispatch:
