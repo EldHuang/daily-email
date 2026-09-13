@@ -2,7 +2,7 @@ name: Daily Grade Update
 
 on:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "20 8 * * *"
       timezone: "America/Los_Angeles"
   workflow_dispatch:
 
