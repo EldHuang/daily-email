@@ -6,7 +6,8 @@ def main():
     grades = canvas.grades()
 
     email = Email()
-    email.send_email(grades)
+    email.convert_data(grades)
+    email.send_email()
 
 if __name__ == "__main__":
     main()

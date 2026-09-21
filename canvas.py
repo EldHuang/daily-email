@@ -37,9 +37,13 @@ class Canvas:
             classList[name] = {
                 "href": course.get("html_url"),
                 "overall": grades.get("current_grade"),
+                "current_score": grades.get("current_score"),
                 "score": score
             }
 
         classList.pop("Class of 2030 Counseling", None)
 
         return classList
+
+canvas = Canvas()
+canvas.grades()

@@ -1,4 +1,6 @@
 import os
+from string import Template
+import pandas as pd
 import smtplib
 from datetime import datetime
 from email.message import EmailMessage
@@ -18,23 +20,43 @@ class Email:
         self.day = self.date.strftime("%d")
         self.year = self.date.strftime("%Y")
 
-    def send_email(self, info):
-        msg = EmailMessage()
+        self.compiledData = {
+            "Subject": [],
+            "Letter": [],
+            "Percent": [],
+        }
+        self.grades_table = None
 
-        infoStr = ""
+    def convert_data(self, info):
         for name, content in info.items():
-            infoStr += f"{name} >>> {content['overall']}\n                "
+            self.compiledData["Subject"].append(name)
+            self.compiledData["Letter"].append(content['overall'])
+            self.compiledData["Percent"].append(content['current_score'])
+        pd.set_option('display.unicode.east_asian_width', True)
+
+        self.grades_table = pd.DataFrame(self.compiledData)
+
+    def send_email(self):
+        msg = EmailMessage()
 
         msg["Subject"] = f"{self.weekday}, {self.month} {self.day}, {self.year} Morning Update"
         msg["From"] = EMAIL
         msg["To"] = EMAIL
-        msg.set_content(
-            f"""
-            Good morning! Here is today's update.
-            
-            -------- GRADES --------
-                {infoStr}
-            """
+
+        # Include Mandarin Characters
+        html_table = self.grades_table.to_html(index=False, justify='left')
+
+        # Read html file
+        with open("email_template.html", encoding="utf-8") as file:
+            template_content = file.read()
+
+        # Format data into email
+        html_template = Template(template_content)
+        html_body = html_template.substitute(
+            date=f"{self.weekday}, {self.month} {self.day} {self.year}",
+            grades_table=html_table,
         )
+
+        msg.add_alternative(html_body, subtype='html')
 
         self.connection.send_message(msg)

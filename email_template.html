@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { font-family: Arial, sans-serif; color: #333333; line-height: 1.6; }
+      .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+      .section-title { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; margin-top: 25px; }
+      table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+      th, td { border: 1px solid #dddddd; text-align: left; padding: 10px; }
+      th { background-color: #f2f2f2; font-weight: bold; }
+      tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Morning Update - $date</h2>
+      <p>Good morning! Here is your daily summary.</p>
+
+      <!-- Grades Section -->
+      <h3 class="section-title">📊 Grades Summary</h3>
+      $grades_table
+    </div>
+  </body>
+</html>
