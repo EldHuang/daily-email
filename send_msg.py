@@ -1,9 +1,10 @@
 import os
-from string import Template
 import pandas as pd
 import smtplib
 from datetime import datetime
 from email.message import EmailMessage
+from zoneinfo import ZoneInfo
+from string import Template
 
 EMAIL = os.environ["EMAIL"]
 PASSWORD = os.environ["PASS"]
@@ -14,10 +15,11 @@ class Email:
         self.connection.starttls()
         self.connection.login(user=EMAIL, password=PASSWORD)
 
-        self.date = datetime.now()
+        self.date = datetime.now(ZoneInfo("America/Los_Angeles"))
         self.weekday = self.date.strftime("%A")
         self.month = self.date.strftime("%b")
         self.day = self.date.strftime("%d")
+        self.hour = self.date.hour
         self.year = self.date.strftime("%Y")
 
         self.compiledData = {
@@ -27,6 +29,7 @@ class Email:
         }
         self.grades_table = None
 
+    
     def convert_data(self, info):
         for name, content in info.items():
             self.compiledData["Subject"].append(name)
@@ -36,10 +39,27 @@ class Email:
 
         self.grades_table = pd.DataFrame(self.compiledData)
 
+    def find_time(self):
+        time = self.hour
+        if time > 12:
+            time -= 12
+            time = str(time)
+            time += "PM"
+        elif time == 12:
+            time = str(time)
+            time += "PM"
+        else:
+            time = str(time)
+            time += "AM"
+
+        return time
+
     def send_email(self):
+        time = self.find_time()
+
         msg = EmailMessage()
 
-        msg["Subject"] = f"{self.weekday}, {self.month} {self.day}, {self.year} Morning Update"
+        msg["Subject"] = f"{self.weekday}, {self.month} {self.day}, {self.year} | {time} Update"
         msg["From"] = EMAIL
         msg["To"] = EMAIL
 
@@ -53,6 +73,7 @@ class Email:
         # Format data into email
         html_template = Template(template_content)
         html_body = html_template.substitute(
+            time_of_day=time,
             date=f"{self.weekday}, {self.month} {self.day} {self.year}",
             grades_table=html_table,
         )
