@@ -65,7 +65,7 @@ class Email:
 
         # Include Mandarin Characters
         html_table = self.grades_table.to_html(index=False, justify='left')
-
+        
         # Read html file
         with open("./templates/email_template.html", encoding="utf-8") as file:
             template_content = file.read()
