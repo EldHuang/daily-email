@@ -1,12 +1,13 @@
 import os
 from string import Template
-import pandas as pd
 import smtplib
 from datetime import datetime
 from email.message import EmailMessage
 
 EMAIL = os.environ["EMAIL"]
 PASSWORD = os.environ["PASS"]
+
+
 
 class Email:
     def __init__(self):
@@ -20,40 +21,35 @@ class Email:
         self.day = self.date.strftime("%d")
         self.year = self.date.strftime("%Y")
 
-        self.compiledData = {
-            "Subject": [],
-            "Letter": [],
-            "Percent": [],
-        }
-        self.grades_table = None
 
-    def convert_data(self, info):
-        for name, content in info.items():
-            self.compiledData["Subject"].append(name)
-            self.compiledData["Letter"].append(content['overall'])
-            self.compiledData["Percent"].append(content['current_score'])
-        pd.set_option('display.unicode.east_asian_width', True)
+    def get_time_of_day(self, hour):
+        if 5 <= hour < 12:
+            return "Morning"
+        elif 12 <= hour < 17:
+            return "Afternoon"
+        elif 17 <= hour < 21:
+            return "Evening"
+        else:
+            return "Nighttime"
 
-        self.grades_table = pd.DataFrame(self.compiledData)
 
-    def send_email(self):
+    def send_email(self, html_table):
         msg = EmailMessage()
+        time_of_day = self.get_time_of_day(hour=datetime.now().hour)
 
-        msg["Subject"] = f"{self.weekday}, {self.month} {self.day}, {self.year} Morning Update"
+        msg["Subject"] = f"{self.weekday}, {self.month} {self.day}, {self.year} | {time_of_day} Update"
         msg["From"] = EMAIL
         msg["To"] = EMAIL
 
-        # Include Mandarin Characters
-        html_table = self.grades_table.to_html(index=False, justify='left')
-
-        # Read html file
-        with open("email_template.html", encoding="utf-8") as file:
+        # Read html template file
+        with open("templates/email_template.html", encoding="utf-8") as file:
             template_content = file.read()
 
-        # Format data into email
+        # Format data into email + pass parameters
         html_template = Template(template_content)
         html_body = html_template.substitute(
-            date=f"{self.weekday}, {self.month} {self.day} {self.year}",
+            date=f"{self.weekday}, {self.month} {self.day}, {self.year}",
+            time_of_day=time_of_day,
             grades_table=html_table,
         )
 
