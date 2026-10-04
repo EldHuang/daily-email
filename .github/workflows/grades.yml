@@ -25,7 +25,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install requests flask pandas flask_sqlalchemy sqlalchemy.orm
 
       - name: Run grade updater
         env:
