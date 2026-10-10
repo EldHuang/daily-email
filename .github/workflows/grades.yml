@@ -7,7 +7,6 @@ on:
 
   schedule:
     - cron: "20 1 * * *"
-    - cron: "15 13 * * *"
       timezone: "America/Los_Angeles"
 
   workflow_dispatch:
