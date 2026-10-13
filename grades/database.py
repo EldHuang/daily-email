@@ -38,7 +38,7 @@ class Database:
         for course_name, data in grades.items():
             if course_name in period_map:
                 assigned_period = period_map[course_name]
-                final_scores[assigned_period] = f"{data["overall"]}, {data["score"]}"
+                final_scores[assigned_period] = f"{data['overall']}, {data['score']}"
 
         new_grades = self.Grades(
             timestamp=datetime.now(),
