@@ -6,8 +6,9 @@ on:
       - main
 
   schedule:
-    - cron: "20 1 * * *"
-      timezone: "America/Los_Angeles"
+    # ⚠️ FIXED: GitHub Actions does not support the 'timezone' key. 
+    # Crons always run in UTC. 1:20 AM PDT is 8:20 AM UTC.
+    - cron: "20 8 * * *"
 
   workflow_dispatch:
 
@@ -33,3 +34,15 @@ jobs:
           EMAIL: ${{ secrets.EMAIL }}
           PASS: ${{ secrets.PASS }}
         run: python main.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@://github.com"
+          
+          # Force git to see db, even if file is specified in .gitignore
+          git add -f instance/grades.db
+          
+          # Commit the changes or exit cleanly if there's no new data
+          git commit -m "Automated database update [skip ci]" || echo "No changes to commit"
+          git push
