@@ -43,6 +43,3 @@ class Canvas:
         classList.pop("Class of 2030 Counseling", None)
 
         return classList
-
-canvas = Canvas()
-canvas.grades()
