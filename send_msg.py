@@ -5,10 +5,13 @@ from datetime import datetime
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
-EMAIL = os.getenv("EMAIL")
-PASSWORD = os.getenv("PASS")
+# EMAIL = os.getenv("EMAIL")
+# PASSWORD = os.getenv("PASS")
+
+EMAIL = os.environ.get("EMAIL")
+PASSWORD = os.environ.get("PASS")
 
 
 
