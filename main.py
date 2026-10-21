@@ -3,12 +3,6 @@ from grades.database import Database
 from grades.create_table import CreateTable
 from send_msg import Email
 
-"""
-Add tokens and env variables every time program is run locally in a new window. New terminal environment does not store old variables.
-Export: EMAIL (cuhsd)
-        PASS (Python app password)
-        TOKEN (Canvas token)
-"""
 
 # Name of classes on dashboard of canvas
 period_map = {

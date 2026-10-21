@@ -1,9 +1,12 @@
 import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Canvas:
     def __init__(self):
-        self.token = os.environ["TOKEN"]
+        self.token = os.getenv("CANVAS_TOKEN")
         self.headers = {"Authorization": f"Bearer {self.token}"}
         self.base_url = "https://cuhsd.instructure.com/api/v1"
 

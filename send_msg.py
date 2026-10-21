@@ -3,9 +3,12 @@ from string import Template
 import smtplib
 from datetime import datetime
 from email.message import EmailMessage
+from dotenv import load_dotenv
 
-EMAIL = os.environ["EMAIL"]
-PASSWORD = os.environ["PASS"]
+load_dotenv()
+
+EMAIL = os.getenv("EMAIL")
+PASSWORD = os.getenv("PASS")
 
 
 
