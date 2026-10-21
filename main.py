@@ -2,6 +2,7 @@ from grades.canvas import Canvas
 from grades.database import Database
 from grades.create_table import CreateTable
 from send_msg import Email
+import os
 
 
 # Name of classes on dashboard of canvas
@@ -16,7 +17,11 @@ period_map = {
 }
 
 def main():
-    canvas = Canvas()
+    token = os.environ.get("TOKEN")
+    ema = os.environ.get("EMAIL")
+    password = os.environ.get("PASS")
+
+    canvas = Canvas(token)
     grades = canvas.grades()
 
     database = Database()
@@ -28,7 +33,7 @@ def main():
     createTable.convert_data(period_map=period_map, days_to_offset=0)
     grades_table = createTable.create_grades_table(yesterday=yesterday)
 
-    email = Email()
+    email = Email(ema, password)
     email.send_email(grades_table)
 
 if __name__ == "__main__":

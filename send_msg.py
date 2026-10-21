@@ -1,25 +1,19 @@
-import os
 from string import Template
 import smtplib
 from datetime import datetime
 from email.message import EmailMessage
-from dotenv import load_dotenv
 
-# load_dotenv()
 
-# EMAIL = os.getenv("EMAIL")
-# PASSWORD = os.getenv("PASS")
-
-EMAIL = os.environ.get("EMAIL")
-PASSWORD = os.environ.get("PASS")
 
 
 
 class Email:
-    def __init__(self):
+    def __init__(self, email, password):
+        self.EMAIL = email
+        self.PASSWORD = password
         self.connection = smtplib.SMTP(host="smtp.gmail.com", port=587)
         self.connection.starttls()
-        self.connection.login(user=EMAIL, password=PASSWORD)
+        self.connection.login(user=self.EMAIL, password=self.PASSWORD)
 
         self.date = datetime.now()
         self.weekday = self.date.strftime("%A")
@@ -44,8 +38,8 @@ class Email:
         time_of_day = self.get_time_of_day(hour=datetime.now().hour)
 
         msg["Subject"] = f"{self.weekday}, {self.month} {self.day}, {self.year} | {time_of_day} Update"
-        msg["From"] = EMAIL
-        msg["To"] = EMAIL
+        msg["From"] = self.EMAIL
+        msg["To"] = self.EMAIL
 
         # Read html template file
         with open("templates/email_template.html", encoding="utf-8") as file:
