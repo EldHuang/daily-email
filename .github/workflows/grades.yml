@@ -25,7 +25,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: pip install requests dotenv
+        run: pip install requests dotenv sqlalchemy.orm flask flask_sqlalchemy
 
       - name: Run grade updater
         env:
