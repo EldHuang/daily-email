@@ -2,7 +2,7 @@ from string import Template
 import smtplib
 from datetime import datetime
 from email.message import EmailMessage
-
+import pytz
 
 
 
@@ -15,7 +15,9 @@ class Email:
         self.connection.starttls()
         self.connection.login(user=self.EMAIL, password=self.PASSWORD)
 
-        self.date = datetime.now()
+        pacific = pytz.timezone('America/Los_Angeles')
+        
+        self.date = datetime.now(pacific)
         self.weekday = self.date.strftime("%A")
         self.month = self.date.strftime("%b")
         self.day = self.date.strftime("%d")
