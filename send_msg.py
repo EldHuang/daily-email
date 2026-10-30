@@ -37,7 +37,7 @@ class Email:
 
     def send_email(self, html_table):
         msg = EmailMessage()
-        time_of_day = self.get_time_of_day(hour=datetime.now().hour)
+        time_of_day = self.get_time_of_day(hour=self.date.hour)
 
         msg["Subject"] = f"{self.weekday}, {self.month} {self.day}, {self.year} | {time_of_day} Update"
         msg["From"] = self.EMAIL
